@@ -1,0 +1,41 @@
+<project name="Chess" default="dist" basedir=".">
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="bin" location="bin"/>
+  <property name="rsc" location="rsc"/>
+  <property name="main-class" value="brett.MainWindow"/>
+
+  <target name="init">
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${bin}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source" >
+    <!-- Compile the java code from ${src} into ${bin} -->
+    <javac srcdir="${src}" destdir="${bin}"/>
+  </target>
+  
+  <target name="copy" depends="compile"
+        description="copy resources" >
+    <copy todir="${bin}">
+    	<fileset dir="${rsc}"/>
+  	</copy>
+  </target>
+
+  <target name="dist" depends="copy"
+        description="generate the distribution" >
+    <!-- Put everything in ${build} into the jar file -->
+    <jar destfile="Chess.jar" basedir="${bin}">
+        <manifest>
+            <attribute name="Main-Class" value="${main-class}"/>
+            <attribute name="Class-Path" value="."/>
+        </manifest>
+    </jar>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <delete dir="${bin}"/>
+  </target>
+</project>
